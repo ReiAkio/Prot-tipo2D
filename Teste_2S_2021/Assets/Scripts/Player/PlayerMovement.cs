@@ -35,11 +35,6 @@ public class PlayerMovement : MonoBehaviour
         BodyRef = gameObject.GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
-    {
-        Debug.Log("Direção Atual: " + GetCurrentDirection());
-    }
-
     private void FixedUpdate()
     {
         movementVerify();
