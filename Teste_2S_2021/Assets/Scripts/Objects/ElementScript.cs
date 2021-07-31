@@ -4,12 +4,6 @@ using UnityEngine;
 
 public class ElementScript : ElementalObject
 {
-    private void Awake()
-    {
-        if (ObjectElement.Equals(null))
-            ObjectElement = Element.NONE;
-    }
-
     private void OnTriggerEnter2D(Collider2D other)
     {
         var StatusFromPlayer = other.gameObject.GetComponent<PlayerStatus>();

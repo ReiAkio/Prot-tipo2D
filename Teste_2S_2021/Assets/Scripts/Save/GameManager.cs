@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public Scene NextLevel;
     public string PlayerTag;
     
+    // Private variables
     private Scene ActualLevel;
     private PlayerStatus Status; 
 
@@ -29,7 +30,10 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
-        PlayerTag ??= "Player";
+        // Verify if there's previous attached PlayerTag
+        PlayerTag ??= "Player"; // Set the default PlayerTag
+        
+        // Get references and save the game on the beginning of the scene
         Status = GameObject.FindWithTag(PlayerTag).GetComponent<PlayerStatus>();
         ActualLevel = SceneManager.GetActiveScene();
         SaveSystem.SaveGame(new PlayerData(this));

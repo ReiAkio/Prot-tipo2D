@@ -14,8 +14,11 @@ public class PlayerStatus : MonoBehaviour
 
     private void Awake()
     {
+        // Verify if there's previous attached element
         if (PlayerCurrentElement.Equals(null))
             PlayerCurrentElement = Element.NONE;
+        
+        // Adjust initial variables
         PlayerCurrentScene = SceneManager.GetActiveScene();
         IsPlayerDead = false;
     }
