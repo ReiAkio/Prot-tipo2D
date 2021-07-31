@@ -15,7 +15,5 @@ public class ElementScript : ElementalObject
         var StatusFromPlayer = other.gameObject.GetComponent<PlayerStatus>();
         if (StatusFromPlayer)
             StatusFromPlayer.PlayerCurrentElement = ObjectElement;
-        else
-            Debug.Log("Passa sem problemas...");
     }
 }

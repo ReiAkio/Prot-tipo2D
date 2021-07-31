@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using Enums;
 using UnityEngine;
@@ -14,14 +15,17 @@ public class PlayerMovement : MonoBehaviour
     public KeyCode RightKey;
 
     [Header("Speed Settings")] 
-    public float Speed = 2.05f;
+    public float Speed = 2.5f;
 
-    private Directions LastDirection;
-    private Rigidbody2D BodyRef;
+    // Private variables
+    private Direction LastDirection;
+    private Rigidbody2D RigidBody2DReference;
 
     private void Awake()
     {
-        // Set default settings
+        // Setting default settings...
+        
+        // Setting KeyBind settings
         if (UpKey == KeyCode.None)
             UpKey = KeyCode.W;
         if (DownKey == KeyCode.None)
@@ -30,82 +34,87 @@ public class PlayerMovement : MonoBehaviour
             LeftKey = KeyCode.A;
         if (RightKey == KeyCode.None)
             RightKey = KeyCode.D;
+        
+        // Setting default direction
         if (LastDirection.Equals(null))
-            LastDirection = Directions.RIGHT;
-        BodyRef = gameObject.GetComponent<Rigidbody2D>();
+            LastDirection = Direction.NONE;
+        
+        // Getting references
+        RigidBody2DReference = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
-        movementVerify();
+        MoveCharacter();
     }
-
-    private void movementVerify()
+    
+    private void MoveCharacter()
     {
-        BodyRef.velocity = MovementVector() * Speed;
+        // Update the velocity vector of the player
+        RigidBody2DReference.velocity = MovementInputVector() * Speed;
     }
-
-    private Vector2 MovementVector()
+    
+    private Vector2 MovementInputVector()
     {
-        var MovementVector = new Vector2(0, 0);
+        // Creation of the new vector
+        var InputVector = Vector2.zero;
+        
+        // Evaluation of the Horizontal axis
         if (Input.GetKey(LeftKey))
-        {
-            MovementVector[0] = -1f;
-            LastDirection = Directions.LEFT;
-        }
+            InputVector.x = -1f;
         else if (Input.GetKey(RightKey))
-        {
-            MovementVector[0] = 1f;
-            LastDirection = Directions.RIGHT;
-        }
+            InputVector.x = 1f;
 
+        // Evaluation of the Vertical axis
         if (Input.GetKey(UpKey))
-        {
-            MovementVector[1] = 1f;
-            LastDirection = Directions.UP;
-        }
+            InputVector.y = 1f;
         else if (Input.GetKey(DownKey))
-        {
-            MovementVector[1] = -1f;
-            LastDirection = Directions.DOWN;
-        }
+            InputVector.y = -1f;
 
-        return MovementVector.normalized;
+        // Return the new movement vector
+        return InputVector.normalized;
     }
 
-    public Directions GetCurrentDirection()
+    public Direction GetCurrentDirection()
     {
-        if (MovementVector()[0] > 0)
-            return Directions.RIGHT;
-        if (MovementVector()[0] < 0)
-            return Directions.LEFT;
-        if (MovementVector()[1] > 0)
-            return Directions.UP;
-        if (MovementVector()[1] < 0)
-            return Directions.DOWN;
-        if (MovementVector().magnitude == 0)
-        {
-            switch (LastDirection)
+        // Fix the values the function will work with
+        var movementState = MovementInputVector();
+        var current = Direction.NONE;
+        
+        // Verify Horizontal Movement
+        if (movementState.x > 0)
+            current = Direction.RIGHT;
+        else if (movementState.x < 0)
+            current = Direction.LEFT;
+
+        // Verify Vertical Movement
+        if (movementState.y > 0)
+            current = Direction.UP;
+        else if (movementState.y < 0)
+            current = Direction.DOWN;
+
+        // Verify if the player is not moving
+        if (movementState.magnitude == 0)
+            current = LastDirection switch
             {
-                case Directions.UP:
-                    return Directions.UP_IDLE;
-                case Directions.DOWN:
-                    return Directions.DOWN_IDLE;
-                case Directions.LEFT:
-                    return Directions.LEFT_IDLE;
-                case Directions.RIGHT:
-                    return Directions.RIGHT_IDLE;
-                case Directions.UP_IDLE:
-                    return Directions.UP_IDLE;
-                case Directions.DOWN_IDLE:
-                    return Directions.DOWN_IDLE;
-                case Directions.LEFT_IDLE:
-                    return Directions.LEFT_IDLE;
-                case Directions.RIGHT_IDLE:
-                    return Directions.RIGHT_IDLE;
-                
-            }
-        }
-        return Directions.RIGHT;
+                Direction.RIGHT => Direction.RIGHT_IDLE,
+                Direction.LEFT => Direction.LEFT_IDLE,
+                Direction.UP => Direction.UP_IDLE,
+                Direction.DOWN => Direction.DOWN_IDLE,
+                Direction.RIGHT_IDLE => Direction.RIGHT_IDLE,
+                Direction.LEFT_IDLE => Direction.LEFT_IDLE,
+                Direction.UP_IDLE => Direction.UP_IDLE,
+                Direction.DOWN_IDLE => Direction.DOWN_IDLE,
+                _ => current
+            };
+
+        // Verify the initial case
+        if (LastDirection == Direction.NONE)
+            current = Direction.RIGHT;
+
+        // Update Last Direction for the not moving case
+        LastDirection = current;
+        
+        return current;
     }
 }

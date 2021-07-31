@@ -29,7 +29,7 @@ public class ColorVerifier : MonoBehaviour
     private void VerifyColor(Element currentElement)
     {
         if (currentElement == Element.NONE)
-            Renderer.color = Color.gray;
+            Renderer.color = Color.white;
         if (currentElement == Element.GEO)
             Renderer.color = Color.yellow;
         if (currentElement == Element.HYDRO)

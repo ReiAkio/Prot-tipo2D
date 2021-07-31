@@ -16,7 +16,5 @@ public class TrapScript : ElementalObject
         var StatusFromPlayer = other.gameObject.GetComponent<PlayerStatus>();
         if (StatusFromPlayer && StatusFromPlayer.PlayerCurrentElement != ObjectElement)
             StatusFromPlayer.IsPlayerDead = true;
-        else
-            Debug.Log("Passa sem problemas...");
     }
 }

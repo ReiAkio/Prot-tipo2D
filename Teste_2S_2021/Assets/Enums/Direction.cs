@@ -1,6 +1,6 @@
 namespace Enums
 {
-    public enum Directions
+    public enum Direction
     {
         // Adicionar diagonais?
         UP_IDLE,
@@ -10,6 +10,7 @@ namespace Enums
         UP,
         DOWN,
         LEFT,
-        RIGHT
+        RIGHT,
+        NONE
     }
 }
