@@ -10,8 +10,6 @@ public class MainMenu : MonoBehaviour
     public GameObject mainMenu;
     public GameObject optionMenu;
     public GameObject firstOptionButton;
-    private GameObject lastSelectedGameObject;
-    private GameObject atualSelectedGameObject;
     
     public void playGame()
     {
@@ -22,7 +20,7 @@ public class MainMenu : MonoBehaviour
     {
         optionMenu.SetActive(true);
         mainMenu.SetActive(false);
-        EventSystem.current.SetSelectedGameObject((firstOptionButton));
+        EventSystem.current.SetSelectedGameObject(firstOptionButton);
     }
 
     public void quitGame()
@@ -36,7 +34,7 @@ public class MainMenu : MonoBehaviour
         if (GameObject.ReferenceEquals(EventSystem.current.currentSelectedGameObject, null))
         {
 
-            EventSystem.current.SetSelectedGameObject((firstButton));
+            EventSystem.current.SetSelectedGameObject(firstButton);
         }
 
     }

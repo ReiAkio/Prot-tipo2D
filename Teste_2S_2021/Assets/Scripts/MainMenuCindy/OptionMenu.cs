@@ -11,7 +11,7 @@ using UnityEngine.EventSystems;
      
      public void Start()
      {
-         EventSystem.current.SetSelectedGameObject((optionFirstButton));
+         EventSystem.current.SetSelectedGameObject(optionFirstButton);
          optionMenu.SetActive(true);
          mainMenu.SetActive(false);
      }
@@ -20,12 +20,12 @@ using UnityEngine.EventSystems;
      {
          optionMenu.SetActive(false);
          mainMenu.SetActive(true);
-         EventSystem.current.SetSelectedGameObject((optionButton));
+         EventSystem.current.SetSelectedGameObject(optionButton);
      }
      
      public void Update()
      {
-         if (GameObject.ReferenceEquals(EventSystem.current.currentSelectedGameObject, null))
+         if (ReferenceEquals(EventSystem.current.currentSelectedGameObject, null))
          {
  
              EventSystem.current.SetSelectedGameObject((optionFirstButton));
